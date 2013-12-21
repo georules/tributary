@@ -396,12 +396,13 @@ function after_fork(oldgist, newgist, token, callback) {
   save(newgist.id, JSON.stringify(newgist), token, callback);
 
   //update twitter
-  var twitterpic = JSON.parse(oldgist.files['config.json'].content).thumbnail
-  var oldperson = oldgist.user.login;
-  var newperson = newgist.user.login;
+  var twitterpic = JSON.parse(oldgist.files['config.json'].content).thumbnail;
+  var oldperson = oldgist.user.login || "someone";
+  var newperson = newgist.user.login || "someone";
   var triblink = 'tributary.io/inlet/' + newgist.id;
   if (oldperson !== newperson)  {
-    var message = newperson + " just forked " + oldperson + " on " + triblink + ' #tribforks '+ twitterpic;
+    var message = newperson + " just forked " + oldperson + " on " + triblink + ' #tribforks';
+    if (twitterpic) message += ' ' + twitterpic;
     sendtweet(message);
   }
 }
