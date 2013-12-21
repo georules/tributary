@@ -400,11 +400,10 @@ function after_fork(oldgist, newgist, token, callback) {
   var oldperson = oldgist.user.login;
   var newperson = newgist.user.login;
   var triblink = 'tributary.io/inlet/' + newgist.id;
-  if (oldperson === newperson)  {
-    oldperson = ''
+  if (oldperson !== newperson)  {
+    var message = newperson + " just forked " + oldperson + " on " + triblink + ' #tribforks '+ twitterpic;
+    sendtweet(message);
   }
-  var message = newperson + " just forked " + oldperson + " on " + triblink + ' #tribforks '+ twitterpic;
-  sendtweet(message);
 }
 
 //post save functionality
