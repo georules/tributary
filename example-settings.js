@@ -13,3 +13,8 @@ settings.GITHUB_CLIENT_SECRET=""
 
 settings.IMGUR_CLIENT_ID="";
 settings.IMGUR_CLIENT_SECRET="";
+
+settings.TWITTER_CONSUMER_KEY="";
+settings.TWITTER_CONSUMER_SECRET="";
+settings.TWITTER_ACCESS_TOKEN="";
+settings.TWITTER_ACCESS_SECRET="";

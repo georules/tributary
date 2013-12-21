@@ -37,7 +37,8 @@
     "jshint": "0.9.1",
     "jsonlint": "1.5.1",
     "handlebars": "1.0.10",
-    "coffee-script":"1.6.2"
+    "coffee-script":"1.6.2",
+    "twit":"1.1.11"
   },
   "devDependencies": {
     "browserify": "*",

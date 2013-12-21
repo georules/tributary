@@ -35,6 +35,14 @@ var $visits = db.collection("visits");
 //collection where we store images uploaded for thumbnails
 var $images = db.collection("images");
 
+//TWITTER SETUP
+var twit = require('twit')
+var twitter = new twit({
+  consumer_key : settings.TWITTER_CONSUMER_KEY,
+  consumer_secret : settings.TWITTER_CONSUMER_SECRET,
+  access_token : settings.TWITTER_ACCESS_TOKEN,
+  access_token_secret : settings.TWITTER_ACCESS_SECRET
+});
 
 var app = express()
   .use(express.cookieParser())
@@ -86,6 +94,17 @@ function getgist(gistid, callback) {
     url: url
   , headers: { 'User-Agent': 'tributary' }
   }, callback);
+}
+
+function sendtweet(message) {
+  // https://dev.twitter.com/docs/api/1.1/post/statuses/update
+  var action = 'statuses/update';
+  var data = {
+    status: message
+  }
+  twitter.post(action, data, function (e,d) {
+    if (e) console.log('bad twitter: ' + e)
+  });
 }
 
 //Base view in tributary.
@@ -375,6 +394,17 @@ function after_fork(oldgist, newgist, token, callback) {
   $inlets.save(inlet_data, function(err, result) { if(err) console.error(err); });
 
   save(newgist.id, JSON.stringify(newgist), token, callback);
+
+  //update twitter
+  var twitterpic = JSON.parse(oldgist.files['config.json'].content).thumbnail
+  var oldperson = oldgist.user.login;
+  var newperson = newgist.user.login;
+  var triblink = 'tributary.io/inlet/' + newgist.id;
+  if (oldperson === newperson)  {
+    oldperson = ''
+  }
+  var message = newperson + " just forked " + oldperson + " on " + triblink + ' #tribforks '+ twitterpic;
+  sendtweet(message);
 }
 
 //post save functionality
