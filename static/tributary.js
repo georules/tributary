@@ -1023,6 +1023,12 @@ Tributary = function() {
       for (var i = 0; i < parsers.length; i++) {
         parser = tributary.__parsers__[parsers[i]];
         parsed = parser(parsed, code, filename);
+        if (typeof parsed.type == "undefined") {
+          parsed = esprima.parse(parsed, {
+            loc: true,
+            raw: true
+          });
+        }
       }
     }
     return parsed;
