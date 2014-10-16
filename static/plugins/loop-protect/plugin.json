@@ -1,0 +1,8 @@
+{
+  "id": "loop-protect"
+, "description": "loop protect plugin"
+, "url": "/static/plugins/loop-protect"
+, "js": "index.js"
+, "html": "index.html"
+, "css": "style.css"
+}
