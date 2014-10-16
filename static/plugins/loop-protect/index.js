@@ -19,7 +19,30 @@ function loopProtectPlugin(tributary, plugin) {
 
   plugin.activate = function() {
     el = document.getElementById(plugin.elId);
-    //lets mess with the tributary object
+
+    tributary.__config__.set("loop-protect", true)
+
+    loopProtect.alias = 'protect'
+    tributary.__oldparser__ = tributary.__parser__
+
+    tributary.__parser__ = function(code, filename) {
+      code = loopProtect(code)
+      tributary.__oldparser__(code,filename)
+    }
+
+    loopProtect.hit = function(line) {
+      console.log("dat hit at " + line)
+    }
+
+    window.protect = loopProtect
+
+    //tributary.__events__.on("pre:execute", function(){})
+
+    tributary.__parsers__["loop-protect"] = function(parsed, code, filename) {
+      code = code+";console.log('hiiii');"
+      console.log(code)
+      return code
+    }
   }
   
   plugin.deactivate = function() {
